@@ -1,0 +1,148 @@
+/* 🔥 PEŁNA POPRAWKA DLA KLAWIATURY - RESPONSYWNA */
+.keyboard-container {
+    background: var(--gray-100);
+    border-radius: 20px;
+    padding: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 20px 0;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-400) var(--gray-200);
+}
+
+.keyboard-container::-webkit-scrollbar {
+    height: 5px;
+}
+
+.keyboard-container::-webkit-scrollbar-track {
+    background: var(--gray-200);
+    border-radius: 10px;
+}
+
+.keyboard-container::-webkit-scrollbar-thumb {
+    background: var(--gray-400);
+    border-radius: 10px;
+}
+
+.keyboard-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 100%;
+}
+
+.keyboard-row {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    flex: 0 0 auto;
+    min-width: min-content;
+}
+
+.key {
+    background: var(--gray-300);
+    border: none;
+    border-radius: 10px;
+    min-width: 36px;
+    height: 50px;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--gray-800);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.key:hover:not([disabled]) {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 6px rgba(0,0,0,0.12);
+    background: var(--gray-400);
+}
+
+.key:active:not([disabled]) {
+    transform: translateY(1px);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+/* Specjalne klawisze */
+.key[data-key="enter"] {
+    background: var(--primary-color);
+    color: white;
+    min-width: 70px;
+}
+
+.key[data-key="enter"]:hover {
+    background: #3a56e0;
+}
+
+.key[data-key="backspace"] {
+    background: var(--warning-color);
+    color: white;
+    min-width: 60px;
+}
+
+.key[data-key="backspace"]:hover {
+    background: #e11d74;
+}
+
+/* Kolory statusów */
+.key.correct, .key.correct:hover {
+    background: var(--correct-color);
+    color: white;
+}
+
+.key.present, .key.present:hover {
+    background: var(--present-color);
+    color: white;
+}
+
+.key.absent, .key.absent:hover {
+    background: var(--absent-color);
+    color: white;
+}
+
+/* Media queries dla małych ekranów */
+@media (max-width: 480px) {
+    .key {
+        height: 45px;
+        min-width: 32px;
+        font-size: 0.85rem;
+        padding: 0 2px;
+    }
+    
+    .key[data-key="enter"],
+    .key[data-key="backspace"] {
+        min-width: 55px;
+    }
+}
+
+@media (max-width: 360px) {
+    .key {
+        height: 40px;
+        min-width: 28px;
+        font-size: 0.75rem;
+    }
+    
+    .key[data-key="enter"],
+    .key[data-key="backspace"] {
+        min-width: 50px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Animacja pojawiania się klawiatury */
+.keyboard-container {
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.keyboard-container.show {
+    opacity: 1;
+    transform: translateY(0);
+}

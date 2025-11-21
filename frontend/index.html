@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Codzienne Wordle po polsku - gra logiczna z polskimi słowami">
+    <title>Wordle PL - Codzienne wyzwanie słowne</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <div class="app-header">
+            <h1 class="app-title">WORDLE PL</h1>
+            <p class="app-subtitle">Codzienne wyzwanie słowne po polsku</p>
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-value" id="day-number">1</div>
+                    <div class="stat-label">Dzień</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="win-streak">0</div>
+                    <div class="stat-label">Seria</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="win-rate">0%</div>
+                    <div class="stat-label">Skuteczność</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-container">
+            <div class="game-info">
+                <div class="word-length">Słowo <span id="word-length">5</span> liter</div>
+                <div class="attempts-left">Pozostało prób: <span id="attempts-left">6</span></div>
+            </div>
+
+            <div class="game-board" id="game-board">
+                <!-- Plansza zostanie wygenerowana przez JavaScript -->
+            </div>
+
+            <div class="game-message" id="game-message">
+                <!-- Komunikaty gry -->
+            </div>
+
+            <div class="keyboard-container">
+                <div class="keyboard-rows">
+                    <div class="keyboard-row">
+                        <button class="key" data-key="q">q</button>
+                        <button class="key" data-key="w">w</button>
+                        <button class="key" data-key="e">e</button>
+                        <button class="key" data-key="ę">ę</button>
+                        <button class="key" data-key="r">r</button>
+                        <button class="key" data-key="t">t</button>
+                        <button class="key" data-key="y">y</button>
+                        <button class="key" data-key="u">u</button>
+                        <button class="key" data-key="i">i</button>
+                        <button class="key" data-key="o">o</button>
+                        <button class="key" data-key="ó">ó</button>
+                        <button class="key" data-key="p">p</button>
+                    </div>
+                    <div class="keyboard-row">
+                        <button class="key wide" data-key="a">a</button>
+                        <button class="key" data-key="ą">ą</button>
+                        <button class="key" data-key="s">s</button>
+                        <button class="key" data-key="ś">ś</button>
+                        <button class="key" data-key="d">d</button>
+                        <button class="key" data-key="f">f</button>
+                        <button class="key" data-key="g">g</button>
+                        <button class="key" data-key="h">h</button>
+                        <button class="key" data-key="j">j</button>
+                        <button class="key" data-key="k">k</button>
+                        <button class="key" data-key="l">l</button>
+                        <button class="key" data-key="ł">ł</button>
+                    </div>
+                    <div class="keyboard-row">
+                        <button class="key extra-wide" data-key="enter">ENTER</button>
+                        <button class="key" data-key="z">z</button>
+                        <button class="key" data-key="ź">ź</button>
+                        <button class="key" data-key="ż">ż</button>
+                        <button class="key" data-key="x">x</button>
+                        <button class="key" data-key="c">c</button>
+                        <button class="key" data-key="ć">ć</button>
+                        <button class="key" data-key="v">v</button>
+                        <button class="key" data-key="b">b</button>
+                        <button class="key" data-key="n">n</button>
+                         <button class="key" data-key="ń">ń</button>
+                        <button class="key" data-key="m">m</button>
+                        <button class="key wide" data-key="backspace">
+                            <i class="fas fa-backspace"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <button class="new-game-btn" id="new-game-btn">
+                <i class="fas fa-sync-alt"></i> Nowa Gra
+            </button>
+            <button class="share-btn" id="share-btn" style="display: none;">
+                <i class="fas fa-share-alt"></i> Udostępnij Wynik
+            </button>
+        </div>
+
+        <div class="animations-container" id="animations-container"></div>
+    </div>
+
+    <script src="/static/js/game.js"></script>
+</body>
+</html>
