@@ -2,7 +2,7 @@
 
 **Autor:** Szymon Adamski
 **Data:** 6 grudnia 2025  
-**Przedmiot:** DevOps - Laboratorium  
+**Przedmiot:** Cykl życia i narzędzia DevOps - Laboratorium  
 
 ---
 
