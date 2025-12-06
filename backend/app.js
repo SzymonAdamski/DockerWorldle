@@ -13,71 +13,90 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Baza 365 słów - polskie słowa 5-literowe
+// Baza 365 słów - TYLKO 5-literowe polskie słowa
 const WORD_LIST = [
-    "amber", "basen", "biały", "ciało", "czarny",
-    "demon", "deszcz", "droga", "dzban", "fajny",
-    "forma", "głowa", "gniew", "góral", "grupa",
-    "hałas", "humor", "iskra", "jajko", "jasny",
-    "karma", "klasa", "komin", "konik", "kości",
-    "krawat", "lalka", "laska", "laser", "lekcja",
-    "lista", "liście", "lomot", "ludzie", "ławka",
-    "łaska", "łatwy", "magia", "magia", "malarz",
-    "mango", "masło", "maska", "matka", "medal",
-    "metal", "ميكس", "młody", "model", "morze",
-    "motor", "mózg", "muzyk", "napis", "nerwy",
-    "niedźwiedź", "nisko", "numer", "obiad", "ocean",
-    "ogień", "okład", "opera", "ostra", "owady",
-    "palec", "papier", "pasek", "pasta", "perła",
-    "pięść", "piłka", "pisak", "pizza", "plaża",
-    "poeta", "pokój", "pomoc", "pałac", "prawo",
-    "praca", "próba", "punkt", "pytanie", "ranek",
-    "rower", "rozmowa", "ręka", "rzeka", "saldo",
-    "serce", "seria", "siara", "sieci", "silny",
-    "skała", "sklep", "słoma", "słowo", "smród",
-    "sonda", "sport", "spory", "stały", "statek",
-    "stopa", "stres", "sukno", "super", "szary",
-    "szkoła", "sznur", "sztorm", "ścian", "świat",
-    "tango", "taran", "tarcza", "taśma", "temat",
-    "teren", "tłuszcz", "token", "towar", "trawa",
-    "trąba", "trener", "trzos", "tubka", "tunel",
-    "tupet", "turbo", "twardy", "tygrysa", "tytuł",
-    "ubogi", "ubrań", "ucisk", "udział", "ufoludek",
-    "ulica", "upadek", "upały", "urlop", "usługa",
-    "wakacje", "walka", "wanna", "warsztat", "wątek",
-    "wejście", "wesele", "wiatr", "wiedza", "wierz",
-    "wiking", "willa", "wiosna", "wirusy", "wizerunek",
-    "właść", "wodór", "wolny", "worki", "wózek",
-    "wrota", "wspólne", "wybór", "wyjście", "wykład",
-    "wyrób", "wyspa", "wyścig", "wywiad", "zabawa",
-    "zagra", "zakaz", "zamek", "zapaс", "zasób",
-    "zawód", "ząbek", "zbieg", "zboże", "zegar",
-    "zemsta", "zgoda", "ziemia", "zimno", "zjawa",
-    "złoto", "zmiana", "znak", "zwrot", "żabka",
-    "żaden", "żarty", "żelaz", "żółty", "życie",
-    "pizza", "hasło", "konto", "marka", "ognio",
-    "owies", "palma", "pasta", "peron", "pismo",
-    "płacz", "płyta", "poker", "pompa", "porta",
-    "prace", "prasa", "przed", "radio", "ranek",
-    "razor", "rekord", "remiz", "rezon", "robot",
-    "rodeo", "rozmach", "runda", "rysunek", "sauna",
-    "sekta", "senat", "shrek", "siano", "sigma",
-    "sinus", "siostra", "skaner", "skład", "skóra",
-    "skulpa", "skwar", "słaby", "smaga", "smaki",
-    "snowy", "sobie", "sojusz", "sonda", "spada",
-    "spisu", "spóźnia", "sprzęt", "stado", "staja",
-    "stały", "starter", "stary", "statek", "stelar",
-    "stoły", "stres", "strona", "strój", "sukces",
-    "szabla", "szafa", "szansa", "szatan", "szczyt",
-    "szklana", "szmata", "szyna", "ślady", "śmiej",
-    "środek", "święta", "tabel", "talia", "taniec",
-    "tchórz", "tecza", "tekst", "temat", "tempo",
-    "termin", "teściowa", "tiger", "tkaczy", "token",
-    "torba", "towar", "tracić", "trans", "trawnik",
-    "trend", "trójca", "truck", "trwać", "trzask",
-    "tułów", "turniej", "twarz", "tyran", "układ",
-    "ultra", "umowa", "upadł", "upraw", "urzęd",
-    "walor", "warto", "wzrok", "ząbki", "zdarz"
+    "amber", "basen", "bialy", "cialo", "czary",
+    "demon", "droga", "dzban", "fajny", "forma",
+    "glowa", "gniew", "goral", "grupa", "halas",
+    "humor", "iskra", "jajko", "jasny", "karma",
+    "klasa", "komin", "konik", "kosci", "lalka",
+    "laska", "laser", "lista", "lomot", "lawka",
+    "laska", "latwy", "magia", "malarz", "mango",
+    "maslo", "maska", "matka", "medal", "metal",
+    "mlody", "model", "morze", "motor", "mozog",
+    "muzyk", "napis", "nerwy", "nisko", "numer",
+    "obiad", "ocean", "ogien", "oklad", "opera",
+    "ostra", "owady", "palec", "pasek", "pasta",
+    "perla", "piesc", "pilka", "pisak", "pizza",
+    "plaza", "poeta", "pokoj", "pomoc", "palac",
+    "prawo", "praca", "proba", "punkt", "ranek",
+    "rower", "reka", "rzeka", "saldo", "serce",
+    "seria", "siara", "sieci", "silny", "skala",
+    "sklep", "sloma", "slowo", "smrod", "sonda",
+    "sport", "spory", "staly", "stopa", "stres",
+    "sukno", "super", "szary", "sznur", "scian",
+    "swiat", "tango", "taran", "tasma", "temat",
+    "teren", "token", "towar", "trawa", "traba",
+    "trzos", "tubka", "tunel", "tupet", "turbo",
+    "tytul", "ubogi", "ucisk", "ulica", "urlop",
+    "walka", "wanna", "watek", "wiatr", "wierz",
+    "willa", "wolny", "worki", "wozek", "wrota",
+    "wybor", "wyrob", "wyspa", "wyrok", "zakaz",
+    "zamek", "zasob", "zawod", "zabek", "zbieg",
+    "zboze", "zegar", "zemst", "zgoda", "ziemi",
+    "zimno", "zjawa", "zloto", "zmian", "znak",
+    "zwrot", "zabka", "zaden", "zarty", "zelaz",
+    "zolty", "zycie", "pizza", "haslo", "konto",
+    "marka", "ogien", "owies", "palma", "peron",
+    "pismo", "placz", "plyta", "poker", "pompa",
+    "porta", "prace", "prasa", "przed", "radio",
+    "razor", "rezon", "robot", "rodeo", "runda",
+    "sauna", "sekta", "senat", "shrek", "siano",
+    "sigma", "sinus", "skwar", "slaby", "smaga",
+    "smaki", "snowy", "sobie", "sonda", "spada",
+    "spisu", "stado", "staja", "staly", "stary",
+    "stres", "stroj", "szabla", "szafa", "szans",
+    "szata", "szyna", "slady", "smiej", "srodek",
+    "tabel", "talia", "tchoo", "tecza", "tekst",
+    "tempo", "tiger", "token", "torba", "towar",
+    "trans", "trend", "truck", "twarz", "tyran",
+    "uklad", "ultra", "umowa", "urzad", "walor",
+    "warto", "wzrok", "zabki", "zdarz", "zielo",
+    "zolty", "bomba", "chleb", "cwany", "danie",
+    "dobry", "domek", "drwal", "drzew", "duszy",
+    "dziad", "dzien", "dziki", "filar", "firma",
+    "flaga", "fotel", "fraza", "garaz", "gazet",
+    "gecko", "gesty", "gibon", "gitar", "gnida",
+    "golem", "goral", "goryl", "gouda", "gracz",
+    "groch", "gront", "grosz", "groza", "gruda",
+    "grunt", "grzyb", "gulag", "hades", "handel",
+    "harfa", "hejla", "honda", "honor", "hotel",
+    "husky", "hydra", "ikona", "indyk", "istot",
+    "izola", "jazda", "jelit", "jezyk", "juhas",
+    "kabla", "kadet", "kadra", "kakao", "karta",
+    "kasza", "kempa", "kicia", "klaps", "klaun",
+    "kleks", "klomb", "kluek", "knajp", "kobra",
+    "kogut", "kokos", "kolba", "kombo", "komik",
+    "korek", "korzy", "kotek", "kozak", "kpina",
+    "kraje", "krata", "kredy", "kroki", "krola",
+    "krowa", "krzak", "krzew", "ksiag", "ksyna",
+    "kubek", "kucyk", "kudla", "kufek", "kufer",
+    "kukla", "kulka", "kupce", "kupon", "kuras",
+    "kusza", "kwasy", "kwiat", "kwoka", "lajna",
+    "lampa", "landr", "larwa", "lasek", "latex",
+    "lazur", "leczy", "legat", "legia", "lekko",
+    "lemat", "lewar", "lewek", "lider", "lingo",
+    "linik", "linik", "liryk", "lizak", "lokal",
+    "losos", "lotek", "lotna", "lotra", "lotos",
+    "lotus", "ludek", "lunch", "luter", "luzer",
+    "lysos", "leczy", "limit", "lunar", "lutni",
+    "lykom", "lyzka", "lyzwy", "mlyny", "mnich",
+    "mocny", "moher", "monet", "morda", "mosty",
+    "motyl", "muchy", "murek", "murla", "musli",
+    "naboj", "nacze", "nadal", "nagle", "nakaz",
+    "napor", "napoj", "naraz", "narty", "nasza",
+    "nawet", "nazwa", "neron", "nocka", "norka",
+    "nosal", "notka", "nozny", "nurek", "nylon"
 ];
 
 // Konfiguracja sesji
@@ -155,57 +174,50 @@ app.post('/api/guess', (req, res) => {
         return res.status(400).json({ error: 'Nieznane słowo' });
     }
     
-    // Oblicz wynik dla każdej litery
-    const result = [];
+    // Oblicz wynik dla każdej litery - poprawiony algorytm
+    const result = new Array(todaysWord.length);
     const wordChars = todaysWord.split('');
     const guessChars = normalizedGuess.split('');
+    const wordCharCount = {};
     
-    // Pierwsze przejście - poprawne litery w dobrym miejscu
-    const usedIndices = new Set();
+    // Zlicz litery w słowie docelowym
+    for (let char of wordChars) {
+        wordCharCount[char] = (wordCharCount[char] || 0) + 1;
+    }
     
+    // Pierwsze przejście - oznacz poprawne litery na poprawnych pozycjach (ZIELONE)
     for (let i = 0; i < todaysWord.length; i++) {
         if (guessChars[i] === wordChars[i]) {
-            result.push({
+            result[i] = {
                 letter: guessChars[i],
                 position: i,
                 status: 'correct' // Zielony
-            });
-            usedIndices.add(i);
+            };
+            wordCharCount[guessChars[i]]--; // Zmniejsz licznik
         }
     }
     
-    // Drugie przejście - poprawne litery w złym miejscu
+    // Drugie przejście - oznacz litery występujące w słowie ale na złej pozycji (ŻÓŁTE)
     for (let i = 0; i < todaysWord.length; i++) {
-        if (result[i]) continue; // Już przetworzone
+        if (result[i]) continue; // Już jest zielona, pomiń
         
         const letter = guessChars[i];
-        let found = false;
         
-        for (let j = 0; j < todaysWord.length; j++) {
-            if (usedIndices.has(j)) continue;
-            if (wordChars[j] === letter) {
-                result.push({
-                    letter: letter,
-                    position: i,
-                    status: 'present' // Żółty
-                });
-                usedIndices.add(j);
-                found = true;
-                break;
-            }
-        }
-        
-        if (!found) {
-            result.push({
+        if (wordCharCount[letter] && wordCharCount[letter] > 0) {
+            result[i] = {
+                letter: letter,
+                position: i,
+                status: 'present' // Żółty
+            };
+            wordCharCount[letter]--; // Zmniejsz licznik
+        } else {
+            result[i] = {
                 letter: letter,
                 position: i,
                 status: 'absent' // Szary
-            });
+            };
         }
     }
-    
-    // Sortuj wyniki po pozycji (dla pewności)
-    result.sort((a, b) => a.position - b.position);
     
     // Zapisz próbę
     session.attempts.push({

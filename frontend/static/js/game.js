@@ -8,6 +8,7 @@ class WordleGame {
         this.gameOver = false;
         this.won = false;
         this.board = [];
+        this.eventListenersAttached = false;
         
         // API endpoint
         this.API_URL = window.location.origin + '/api';
@@ -71,6 +72,9 @@ class WordleGame {
     }
     
     attachEventListeners() {
+        // Usuń stare event listenery jeśli istnieją
+        if (this.eventListenersAttached) return;
+        
         // Klawiatura ekranowa
         document.querySelectorAll('.key').forEach(key => {
             key.addEventListener('click', (e) => {
@@ -79,8 +83,8 @@ class WordleGame {
             });
         });
         
-        // Klawiatura fizyczna
-        document.addEventListener('keydown', (e) => {
+        // Klawiatura fizyczna - użyj strzałki funkcji żeby zachować kontekst
+        this.keydownHandler = (e) => {
             if (this.gameOver) return;
             
             const key = e.key.toLowerCase();
@@ -92,17 +96,15 @@ class WordleGame {
             } else if (/^[a-ząćęłńóśźż]$/.test(key)) {
                 this.addLetter(key);
             }
-        });
+        };
+        document.addEventListener('keydown', this.keydownHandler);
         
         // Przycisk nowej gry
         document.getElementById('new-game-btn').addEventListener('click', () => {
-            this.resetGame();
+            window.location.reload();
         });
         
-        // Przycisk udostępniania
-        document.getElementById('share-btn').addEventListener('click', () => {
-            this.shareResult();
-        });
+        this.eventListenersAttached = true;
     }
     
     handleKeyPress(key) {
@@ -135,7 +137,10 @@ class WordleGame {
     
     updateCurrentRow() {
         const row = this.board[this.currentRow];
+        if (!row) return;
+        
         const tiles = row.querySelectorAll('.tile');
+        if (!tiles) return;
         
         tiles.forEach((tile, index) => {
             if (index < this.currentGuess.length) {
@@ -169,6 +174,13 @@ class WordleGame {
             
             if (!response.ok) {
                 const error = await response.json();
+                
+                // Jeśli gra się zakończyła, wymuś reset
+                if (error.error === 'Gra już się zakończyła') {
+                    this.showMessage('Gra zakończona. Rozpocznij nową grę!', 'warning');
+                    return;
+                }
+                
                 throw new Error(error.error || 'Błąd serwera');
             }
             
@@ -184,7 +196,10 @@ class WordleGame {
     
     processGuessResult(data) {
         const row = this.board[this.currentRow];
+        if (!row) return;
+        
         const tiles = row.querySelectorAll('.tile');
+        if (!tiles) return;
         
         // Animacja odwracania kafelków
         data.result.forEach((letterResult, index) => {
@@ -236,7 +251,6 @@ class WordleGame {
             this.showMessage(`Gratulacje! Wygrałeś w ${data.totalAttempts} próbach! 🎉`, 'success');
             this.celebrateWin();
             this.updateStats(true, data.totalAttempts);
-            document.getElementById('share-btn').style.display = 'block';
         }, 500);
     }
     
@@ -247,7 +261,6 @@ class WordleGame {
         setTimeout(() => {
             this.showMessage(`Przegrana! Słowo to: ${data.solution.toUpperCase()} 😔`, 'error');
             this.updateStats(false, this.maxAttempts);
-            document.getElementById('share-btn').style.display = 'block';
         }, 500);
     }
     
@@ -285,6 +298,8 @@ class WordleGame {
     
     shakeRow(rowIndex) {
         const row = this.board[rowIndex];
+        if (!row) return;
+        
         row.classList.add('shake');
         setTimeout(() => row.classList.remove('shake'), 500);
     }
@@ -348,61 +363,65 @@ class WordleGame {
         document.getElementById('day-number').textContent = diffDays;
     }
     
-    shareResult() {
-        const attempts = this.currentRow + (this.won ? 1 : 0);
-        const dayNumber = document.getElementById('day-number').textContent;
+    async resetGame() {
+        // Zablokuj input podczas resetu
+        this.gameOver = true;
         
-        let result = `Wordle PL #${dayNumber} ${this.won ? attempts : 'X'}/${this.maxAttempts}\n\n`;
+        // Reset stanu gry
+        this.currentRow = 0;
+        this.currentGuess = '';
+        this.won = false;
+        this.board = [];
         
-        for (let i = 0; i < (this.won ? attempts : this.maxAttempts); i++) {
-            const row = this.board[i];
-            const tiles = row.querySelectorAll('.tile');
-            
-            tiles.forEach(tile => {
-                if (tile.classList.contains('correct')) {
-                    result += '🟩';
-                } else if (tile.classList.contains('present')) {
-                    result += '🟨';
-                } else if (tile.classList.contains('absent')) {
-                    result += '⬛';
+        // Wyczyść klawiaturę
+        const keys = document.querySelectorAll('.key');
+        if (keys) {
+            keys.forEach(key => {
+                key.classList.remove('correct', 'present', 'absent');
+                delete key.dataset.status;
+            });
+        }
+        
+        // Ukryj komunikaty i przyciski
+        const messageElement = document.getElementById('game-message');
+        if (messageElement) {
+            messageElement.className = 'game-message';
+            messageElement.textContent = '';
+        }
+        
+        // Pobierz nową sesję z backendu
+        try {
+            const response = await fetch(`${this.API_URL}/init`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
                 }
             });
             
-            result += '\n';
+            if (!response.ok) {
+                throw new Error('Nie udało się zainicjalizować gry');
+            }
+            
+            const data = await response.json();
+            this.sessionId = data.sessionId;
+            this.wordLength = data.wordLength;
+            this.maxAttempts = data.maxAttempts;
+            
+            // Aktualizuj UI
+            document.getElementById('word-length').textContent = this.wordLength;
+            document.getElementById('attempts-left').textContent = this.maxAttempts;
+            
+            // Odtwórz planszę
+            this.createBoard();
+            
+            // Odblokuj input
+            this.gameOver = false;
+            
+        } catch (error) {
+            console.error('Błąd resetu gry:', error);
+            this.showMessage('Błąd połączenia z serwerem', 'error');
+            this.gameOver = true; // Zostaw zablokowane przy błędzie
         }
-        
-        // Kopiuj do schowka
-        navigator.clipboard.writeText(result).then(() => {
-            this.showMessage('Wynik skopiowany do schowka!', 'success');
-        }).catch(() => {
-            this.showMessage('Nie udało się skopiować wyniku', 'error');
-        });
-    }
-    
-    async resetGame() {
-        // Wyczyść board
-        this.currentRow = 0;
-        this.currentGuess = '';
-        this.gameOver = false;
-        this.won = false;
-        
-        // Wyczyść kafelki
-        document.querySelectorAll('.tile').forEach(tile => {
-            tile.textContent = '';
-            tile.className = 'tile';
-        });
-        
-        // Wyczyść klawiaturę
-        document.querySelectorAll('.key').forEach(key => {
-            key.classList.remove('correct', 'present', 'absent');
-            delete key.dataset.status;
-        });
-        
-        // Ukryj przycisk udostępniania
-        document.getElementById('share-btn').style.display = 'none';
-        
-        // Reinicjalizuj grę
-        await this.init();
     }
 }
 
