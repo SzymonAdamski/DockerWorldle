@@ -1,6 +1,6 @@
 # Sprawozdanie końcowe - Wordle PL z Docker i Kubernetes
 
-**Autor:** [Twoje imię i nazwisko]  
+**Autor:** Szymon Adamski
 **Data:** 6 grudnia 2025  
 **Przedmiot:** DevOps - Laboratorium  
 
