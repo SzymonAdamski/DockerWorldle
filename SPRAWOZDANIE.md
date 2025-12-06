@@ -18,7 +18,7 @@ Wybrany projekt to **Wordle PL** - polska wersja popularnej gry słownej Wordle.
 
 Aplikacja została zaprojektowana jako mikroserwisy, co umożliwia niezależne skalowanie i deployment poszczególnych komponentów.
 
-![Screenshot - Aplikacja Wordle](screenshots/wordle-app.png)
+![Screenshot - Aplikacja Wordle](screenshots/rys-0-wordle-app.png)
 *Rys. 0: Działająca aplikacja Wordle PL w przeglądarce*
 
 ---
@@ -27,7 +27,7 @@ Aplikacja została zaprojektowana jako mikroserwisy, co umożliwia niezależne s
 
 W trakcie realizacji projektu wykorzystano następujące komendy Linuxowe:
 
-![Screenshot - Terminal Linux](screenshots/linux-terminal.png)
+![Screenshot - Terminal Linux](screenshots/rys-1-linux-terminal.png)
 *Rys. 1: Terminal z podstawowymi komendami Linux*
 
 ### Zarządzanie plikami i katalogami
@@ -123,7 +123,7 @@ git config --global user.email "email@example.com"
 
 #### Praca z branchami
 
-![Screenshot - Git Branch](screenshots/git-branch.png)
+![Screenshot - Git Branch](screenshots/rys-2-git-branch.png)
 *Rys. 2: Tworzenie i przełączanie się między branchami*
 
 ```bash
@@ -189,7 +189,7 @@ git log --oneline --graph
 
 #### Krok 1: Generowanie klucza SSH
 
-![Screenshot - SSH Keygen](screenshots/ssh-keygen.png)
+![Screenshot - SSH Keygen](screenshots/rys-3-ssh-keygen.png)
 *Rys. 3: Generowanie klucza SSH*
 
 ```bash
@@ -218,7 +218,7 @@ cat ~/.ssh/id_ed25519.pub
 
 #### Krok 4: Dodanie klucza do GitHub
 
-![Screenshot - GitHub SSH](screenshots/github-ssh-keys.png)
+![Screenshot - GitHub SSH](screenshots/rys-4-github-ssh-keys.png)
 *Rys. 4: Dodawanie klucza SSH do GitHub*
 
 1. Zaloguj się na GitHub
@@ -274,7 +274,7 @@ Klucze SSH (Secure Shell) są wykorzystywane z następujących powodów:
 
 ### Dockerfile - Backend
 
-![Screenshot - Docker Build Backend](screenshots/docker-build-backend.png)
+![Screenshot - Docker Build Backend](screenshots/rys-5-docker-build-backend.png)
 *Rys. 5: Budowanie obrazu Docker dla backendu*
 
 ```dockerfile
@@ -397,7 +397,7 @@ CMD ["nginx", "-g", "daemon off;"]
 
 ### Plik docker-compose.yaml
 
-![Screenshot - Docker Compose Up](screenshots/docker-compose-up.png)
+![Screenshot - Docker Compose Up](screenshots/rys-6-docker-compose-up.png)
 *Rys. 6: Uruchamianie aplikacji za pomocą Docker Compose*
 
 ```yaml
@@ -472,7 +472,7 @@ Definiuje sieci wewnętrzne Docker:
 
 ### GitHub Actions - Workflow CI/CD
 
-![Screenshot - GitHub Actions](screenshots/github-actions-workflow.png)
+![Screenshot - GitHub Actions](screenshots/rys-7-github-actions-workflow.png)
 *Rys. 7: Workflow GitHub Actions w akcji*
 
 GitHub Actions to platforma CI/CD zintegrowana z GitHub, która automatyzuje:
@@ -817,11 +817,11 @@ Analogicznie do backendu, ale:
 
 ### Deployment do Kubernetes
 
-![Screenshot - Kubectl Apply](screenshots/kubectl-apply.png)
-*Rys. 8: Deployment do Kubernetes*
+![Screenshot - Kubectl Apply](screenshots/rys-8-kubectl-apply.png)
+*Rys. 8: Deployment do Kubernetes (opcjonalne)*
 
-![Screenshot - Kubectl Get Pods](screenshots/kubectl-get-pods.png)
-*Rys. 9: Lista podów w Kubernetes*
+![Screenshot - Kubectl Get Pods](screenshots/rys-9-kubectl-get-pods.png)
+*Rys. 9: Lista podów w Kubernetes (opcjonalne)*
 
 ```bash
 # Zastosowanie konfiguracji
