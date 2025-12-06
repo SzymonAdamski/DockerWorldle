@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordle-frontend
+  labels:
+    app: wordle-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: wordle-frontend
+  template:
+    metadata:
+      labels:
+        app: wordle-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: wordle-frontend:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: BACKEND_URL
+          value: "http://wordle-backend-service:3000"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordle-frontend-service
+spec:
+  selector:
+    app: wordle-frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: LoadBalancer

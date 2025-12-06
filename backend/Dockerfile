@@ -20,7 +20,7 @@ WORKDIR /app
 COPY package.json ./
 
 # Instalacja zależności
-RUN npm install express
+RUN npm install
 
 # Kopiowanie reszty aplikacji
 COPY app.js ./
