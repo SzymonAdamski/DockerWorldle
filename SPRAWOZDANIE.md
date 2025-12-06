@@ -817,11 +817,7 @@ Analogicznie do backendu, ale:
 
 ### Deployment do Kubernetes
 
-![Screenshot - Kubectl Apply](screenshots/rys-8-kubectl-apply.png)
-*Rys. 8: Deployment do Kubernetes (opcjonalne)*
 
-![Screenshot - Kubectl Get Pods](screenshots/rys-9-kubectl-get-pods.png)
-*Rys. 9: Lista podów w Kubernetes (opcjonalne)*
 
 ```bash
 # Zastosowanie konfiguracji
